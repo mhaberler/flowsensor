@@ -16,12 +16,13 @@ static BLEAdvertisementData *advData;
 static BLEAdvertisementData scanResponse = BLEAdvertisementData();
 static BLEAdvertising *pAdvertising;
 
-void beacon_setup(void) {
+
+const uint8_t * beacon_setup(void) {
   BLEDevice::init("");
   scanResponse.setAppearance(BLE_APPEARANCE_GENERIC_TAG);
   scanResponse.setFlags(BLE_HS_ADV_F_BREDR_UNSUP | BLE_HS_ADV_F_DISC_GEN);
   scanResponse.setName("FlowSensor");
-
+  return BLEDevice::getAddress().getNative();
 }
 
 void beacon_update_manufacturer_data(uint8_t *data, size_t size) {
@@ -33,16 +34,8 @@ void beacon_update_manufacturer_data(uint8_t *data, size_t size) {
     pAdvertising->reset();
   }
 
-  std::string manufacturerData;
-  manufacturerData.reserve(size + 2);
-  manufacturerData.push_back(MANUFACTURER_ID &
-                             0x00ff); // manufacturer ID low byte
-  manufacturerData.push_back((MANUFACTURER_ID >> 8) &
-                             0x00ff); // manufacturer ID high byte
-  for (auto i = 0; i < size; i++) {
-    manufacturerData.push_back(data[i]);
-  }
   advData = new BLEAdvertisementData();
+  std::string manufacturerData((char *)data, size);
 
   advData->setManufacturerData(manufacturerData);
   Serial.printf("payload size=%u\n", advData->getPayload().size());

@@ -28,11 +28,11 @@ public:
     if (pinB < 0)
       return;
     if (!digitalPinIsValid(pinA)) {
-      ESP_LOGD("QuadratureDecoder", "invalid pinA: %d", pinA);
+      ESP_LOGD(__FILE__, "invalid pinA: %d", pinA);
       return;
     }
     if (!digitalPinIsValid(pinB)) {
-      ESP_LOGD("QuadratureDecoder", "invalid pinB: %d", pinB);
+      ESP_LOGD(__FILE__, "invalid pinB: %d", pinB);
       return;
     }
     pinA_ = pinA;

@@ -16,8 +16,7 @@ static BLEAdvertisementData *advData;
 static BLEAdvertisementData scanResponse = BLEAdvertisementData();
 static BLEAdvertising *pAdvertising;
 
-
-const uint8_t * beacon_setup(void) {
+const uint8_t *beacon_setup(void) {
   BLEDevice::init("");
   scanResponse.setAppearance(BLE_APPEARANCE_GENERIC_TAG);
   scanResponse.setFlags(BLE_HS_ADV_F_BREDR_UNSUP | BLE_HS_ADV_F_DISC_GEN);
@@ -38,7 +37,7 @@ void beacon_update_manufacturer_data(uint8_t *data, size_t size) {
   std::string manufacturerData((char *)data, size);
 
   advData->setManufacturerData(manufacturerData);
-  Serial.printf("payload size=%u\n", advData->getPayload().size());
+  ESP_LOGD("beacon.cpp", "payload size=%u\n", advData->getPayload().size());
 
   pAdvertising->setScanResponseData(scanResponse);
   pAdvertising->setAdvertisementData(*advData);

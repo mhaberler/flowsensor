@@ -20,7 +20,7 @@ const uint8_t *beacon_setup(void) {
   BLEDevice::init("");
   scanResponse.setAppearance(BLE_APPEARANCE_GENERIC_TAG);
   scanResponse.setFlags(BLE_HS_ADV_F_BREDR_UNSUP | BLE_HS_ADV_F_DISC_GEN);
-  scanResponse.setName("FlowSensor");
+  scanResponse.setName(BLE_NAME);
   return BLEDevice::getAddress().getNative();
 }
 

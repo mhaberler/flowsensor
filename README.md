@@ -3,7 +3,27 @@
 
 <img src="images/flowsensor.jpg"/>
 
+# what it does
+FlowSensor can read out Chinese flow sensor found all over Alibaba and [Amazon](https://www.amazon.de/Water-Sensor-Piece-Tankless-Heater/dp/B08FDZS9C8) like these:
 
+<img src="images/waterflow.jpg"/>
+
+These sensors have a turbine wheel with a magnet, and a Hall sensor attached. As designed, a simple counter suffices to read the flow.
+
+Unfortunately these sensors have serious drawbacks: vibrations - for instance caused by a running pump - can cause bouncing on the sensor signal, even if there is no flow at all (eg vent shut).
+
+To fix this, I came up with an experimental contraption: the same mechanics, but two Hall sensors arranged in 90°. This creates a [quadrature encoder](https://en.wikipedia.org/wiki/Incremental_encoder) which is immune to ringing on any single sensor line:
+<img src="images/qflow.png"/>
+
+This is a scope shot of the analog signal:
+<img src="images/analog.png"/>
+
+# modes
+
+This code can deal with unmodified counter-style sensors as well as quadrature encoders. Select the appropriate target in platformio.
+
+# platforms
+while this should easily run on any ESP32 platform, right now only the M5Stack CoreS3 is supported.
 
 ## Build
 
@@ -13,7 +33,11 @@ cd flowsensor/
 git submodule update --init --recursive
 
 ````
-Choose target and build.
+Choose target,  build and upload.
+
+# Pin connections
+I used pins 17 and 18 on the Port C (blue) connector of the CoreS3. See https://docs.m5stack.com/en/core/CoreS3 for alternatives
+<img src="images/port.jpg"/>
 
 # User interface
 

@@ -13,7 +13,22 @@
 #endif
 
 void ui_update_values(const mfdReport_t &mfd, float maxRate) {
+
 #ifdef LVGL_UI
+  switch (mfd.flags & CHARGE_MASK) {
+  case FLAG_DISCHARGING:
+    lv_obj_set_style_bg_color(ui_Battery, lv_color_hex(0x12EEEC),
+                              LV_PART_INDICATOR);
+    break;
+  case FLAG_CHARGING:
+    lv_obj_set_style_bg_color(ui_Battery, lv_color_hex(0x09CE46),
+                              LV_PART_INDICATOR);
+    break;
+  case FLAG_CHARGE_UNKNOWN:
+    lv_obj_set_style_bg_color(ui_Battery, lv_color_hex(0xFADD18),
+                              LV_PART_INDICATOR);
+    break;
+  }
 
   char buf[30];
   sprintf(buf, "count: %u", mfd.count);

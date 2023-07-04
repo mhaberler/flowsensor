@@ -51,6 +51,14 @@ public:
     detachInterrupt(digitalPinToInterrupt(pin_));
     enabled_ = false;
   }
+  
+  void reset(void) {
+    count_ = 0;
+    irqs_ = 0;
+    flowDetected_ = false;
+    lastEdge_ = 0;
+    bounces_ = 0;
+  }
 
   bool flowDetected(void) { return (micros() - lastEdge_) < flowDeltaT_; }
 

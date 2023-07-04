@@ -10,8 +10,10 @@
 #endif
 
 // https://infocenter.nordicsemi.com/index.jsp?topic=%2Fcom.nordic.infocenter.s132.api.v3.0.0%2Fgroup___b_l_e___a_p_p_e_a_r_a_n_c_e_s.html
-
+#ifndef BLE_APPEARANCE_GENERIC_TAG
 #define BLE_APPEARANCE_GENERIC_TAG 512
+#endif
+
 static BLEAdvertisementData *advData;
 static BLEAdvertisementData scanResponse = BLEAdvertisementData();
 static BLEAdvertising *pAdvertising;
@@ -37,7 +39,7 @@ void beacon_update_manufacturer_data(uint8_t *data, size_t size) {
   std::string manufacturerData((char *)data, size);
 
   advData->setManufacturerData(manufacturerData);
-  ESP_LOGD("beacon.cpp", "payload size=%u\n", advData->getPayload().size());
+  // ESP_LOGI("beacon.cpp", "payload size=%u\n", advData->getPayload().size());
 
   pAdvertising->setScanResponseData(scanResponse);
   pAdvertising->setAdvertisementData(*advData);

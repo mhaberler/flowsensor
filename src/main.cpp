@@ -37,8 +37,12 @@ static float max_rate;
 
 #ifdef LVGL_UI
 void clearCountPressed(lv_event_t *e) {
+#ifdef QUADRATURE_DECODER
   qdecoder.reset();
+#endif
+#ifdef FLOWSENSOR
   flow_sensor.reset();
+#endif
   track_count = 0;
   track_now = micros();
   max_rate = 0;
@@ -125,9 +129,7 @@ void loop() {
 void sensor_update(bool force) {
 
 #ifdef QUADRATURE_DECODER
-
   qsensor_report_t report;
-
   qdecoder.getReport(report);
 
   if ((report.count != track_count) || force) {
@@ -147,6 +149,8 @@ void sensor_update(bool force) {
     beacon_update_manufacturer_data((uint8_t *)&manufacturer_data,
                                     sizeof((manufacturer_data)));
   }
+  // ESP_LOGI(__FILE__, "count: %d rate: %d max_rate %f force %d\n",
+  //          manufacturer_data.count, manufacturer_data.rate, max_rate, force);
   ui_update_values(manufacturer_data, max_rate);
 #endif
 #ifdef FLOWSENSOR
@@ -172,8 +176,8 @@ void sensor_update(bool force) {
     manufacturer_data.last_change = report.last_edge;
     beacon_update_manufacturer_data((uint8_t *)&manufacturer_data,
                                     sizeof((manufacturer_data)));
-    ui_update_values(manufacturer_data, max_rate);
   }
+  ui_update_values(manufacturer_data, max_rate);
 
 #endif
 }

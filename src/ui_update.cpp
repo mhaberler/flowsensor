@@ -15,6 +15,7 @@
 void ui_set_inital_values() {
   lv_obj_set_style_bg_color(ui_Battery, lv_color_hex(0xFADD18),
                             LV_PART_INDICATOR);
+  lv_bar_set_value(ui_FlowRate, 0, LV_ANIM_OFF);
 }
 
 void ui_update_values(const mfdReport_t &mfd, float maxRate) {

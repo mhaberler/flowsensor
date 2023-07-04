@@ -41,6 +41,7 @@ void clearCountPressed(lv_event_t *e) {
   track_count = 0;
   track_now = micros();
   max_rate = 0;
+  sensor_update(true);
 }
 #endif
 
@@ -78,11 +79,16 @@ void setup() {
   manufacturer_data.flags |= FLAG_QUADRATURE;
 #endif
   M5.update();
-  
+
 #ifdef M5UNIFIED
   manufacturer_data.batteryLevel = M5.Power.getBatteryLevel();
-  ESP_LOGI(__FILE__, "battery level: %d\n", manufacturer_data.batteryLevel);
-  battery.attach(BATTERY_UPDATE_SEC, []() {
+#endif
+  const uint8_t *adr = beacon_setup();
+  memcpy(manufacturer_data.address, adr, sizeof(manufacturer_data.address));
+
+  sensor.attach_ms(UPDATE_MS, []() { sensor_update(false); });
+  idle.attach_ms(IDLE_UPDATE_MS, []() {
+#ifdef M5UNIFIED
     M5.update();
     manufacturer_data.batteryLevel = M5.Power.getBatteryLevel();
     manufacturer_data.flags &= ~CHARGE_MASK;
@@ -98,12 +104,9 @@ void setup() {
       manufacturer_data.flags |= FLAG_CHARGE_UNKNOWN;
       break;
     }
-  });
 #endif
-  const uint8_t *adr = beacon_setup();
-  memcpy(manufacturer_data.address, adr, sizeof(manufacturer_data.address));
-  sensor.attach_ms(UPDATE_MS, []() { sensor_update(false); });
-  idle.attach_ms(IDLE_UPDATE_SEC * 1000, []() { sensor_update(true); });
+    sensor_update(true);
+  });
 }
 
 void loop() {

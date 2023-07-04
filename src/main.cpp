@@ -48,7 +48,7 @@ void clearCountPressed(lv_event_t *e) {
 
 void setup() {
 
-  delay(3000);
+  // delay(3000);
 
 #ifdef M5UNIFIED
   auto cfg = M5.config();
@@ -172,8 +172,8 @@ void sensor_update(bool force) {
     manufacturer_data.last_change = report.last_edge;
     beacon_update_manufacturer_data((uint8_t *)&manufacturer_data,
                                     sizeof((manufacturer_data)));
+    ui_update_values(manufacturer_data, max_rate);
   }
-  ui_update_values(manufacturer_data, max_rate);
 
 #endif
 }

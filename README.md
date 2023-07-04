@@ -20,7 +20,7 @@ This is a scope shot of the analog signal:
 
 # modes
 
-This code can deal with unmodified counter-style sensors as well as quadrature encoders. Select the appropriate target in platformio.
+This code can deal with unmodified counter-style sensors as well as quadrature encoders. Select the appropriate target in platformio, build and upload.
 
 # platforms
 while this should easily run on any ESP32 platform, right now only the M5Stack CoreS3 is supported.

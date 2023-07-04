@@ -19,10 +19,10 @@ void ui_update_values(const mfdReport_t &mfd, float maxRate) {
   sprintf(buf, "count: %u", mfd.count);
   lv_label_set_text(ui_Count, buf);
 
-  sprintf(buf, "rate: %.1f", (float)mfd.rate / 10.0f);
+  sprintf(buf, "rate: %u", (uint32_t)(mfd.rate / 10.0f));
   lv_label_set_text(ui_Rate, buf);
 
-  sprintf(buf, "max rate: %.1f", maxRate);
+  sprintf(buf, "max: %u", (uint32_t)maxRate);
   lv_label_set_text(ui_MaxRate, buf);
 
   uint32_t pct = 0;

@@ -31,12 +31,18 @@ extern lv_obj_t *ui_Top;
 extern lv_obj_t *ui_Values;
 extern lv_obj_t *ui_Rate;
 extern lv_obj_t *ui_Count;
+extern lv_obj_t *ui_MaxRate;
 extern lv_obj_t *ui_Buttons;
+void ui_event_ClearCount( lv_event_t * e);
 extern lv_obj_t *ui_ClearCount;
+extern lv_obj_t *ui_ClearCountLabel;
 extern lv_obj_t *ui_Bottom;
 extern lv_obj_t *ui_FlowRate;
 extern lv_obj_t *ui_Battery;
 extern lv_obj_t *ui____initial_actions0;
+
+LV_FONT_DECLARE( ui_font_Font1);
+LV_FONT_DECLARE( ui_font_Font2);
 
 void ui_init(void);
 

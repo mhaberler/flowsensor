@@ -15,8 +15,11 @@ lv_obj_t *ui_Top;
 lv_obj_t *ui_Values;
 lv_obj_t *ui_Rate;
 lv_obj_t *ui_Count;
+lv_obj_t *ui_MaxRate;
 lv_obj_t *ui_Buttons;
+void ui_event_ClearCount( lv_event_t * e);
 lv_obj_t *ui_ClearCount;
+lv_obj_t *ui_ClearCountLabel;
 lv_obj_t *ui_Bottom;
 lv_obj_t *ui_FlowRate;
 lv_obj_t *ui_Battery;
@@ -33,6 +36,12 @@ lv_obj_t *ui____initial_actions0;
 ///////////////////// ANIMATIONS ////////////////////
 
 ///////////////////// FUNCTIONS ////////////////////
+void ui_event_ClearCount( lv_event_t * e) {
+    lv_event_code_t event_code = lv_event_get_code(e);lv_obj_t * target = lv_event_get_target(e);
+if ( event_code == LV_EVENT_PRESSED) {
+      clearCountPressed( e );
+}
+}
 
 ///////////////////// SCREENS ////////////////////
 

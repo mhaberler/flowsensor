@@ -14,29 +14,40 @@ lv_obj_set_flex_align(ui_Main, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER, LV_FL
 
 ui_Top = lv_obj_create(ui_Main);
 lv_obj_set_width( ui_Top, lv_pct(90));
-lv_obj_set_height( ui_Top, lv_pct(40));
+lv_obj_set_height( ui_Top, lv_pct(60));
 lv_obj_set_align( ui_Top, LV_ALIGN_CENTER );
 lv_obj_set_flex_flow(ui_Top,LV_FLEX_FLOW_ROW);
 lv_obj_set_flex_align(ui_Top, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
 lv_obj_clear_flag( ui_Top, LV_OBJ_FLAG_SCROLLABLE );    /// Flags
 
 ui_Values = lv_obj_create(ui_Top);
-lv_obj_set_width( ui_Values, 100);
-lv_obj_set_height( ui_Values, 50);
+lv_obj_set_width( ui_Values, lv_pct(65));
+lv_obj_set_height( ui_Values, lv_pct(100));
 lv_obj_set_align( ui_Values, LV_ALIGN_CENTER );
 lv_obj_set_flex_flow(ui_Values,LV_FLEX_FLOW_COLUMN);
-lv_obj_set_flex_align(ui_Values, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
+lv_obj_set_flex_align(ui_Values, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_START);
 lv_obj_clear_flag( ui_Values, LV_OBJ_FLAG_SCROLLABLE );    /// Flags
 
 ui_Rate = lv_label_create(ui_Values);
 lv_obj_set_width( ui_Rate, LV_SIZE_CONTENT);  /// 1
 lv_obj_set_height( ui_Rate, LV_SIZE_CONTENT);   /// 1
-lv_obj_set_align( ui_Rate, LV_ALIGN_CENTER );
+lv_obj_set_align( ui_Rate, LV_ALIGN_LEFT_MID );
+lv_label_set_text(ui_Rate,"rate:");
+lv_obj_set_style_text_font(ui_Rate, &ui_font_Font2, LV_PART_MAIN| LV_STATE_DEFAULT);
 
 ui_Count = lv_label_create(ui_Values);
 lv_obj_set_width( ui_Count, LV_SIZE_CONTENT);  /// 1
 lv_obj_set_height( ui_Count, LV_SIZE_CONTENT);   /// 1
-lv_obj_set_align( ui_Count, LV_ALIGN_CENTER );
+lv_obj_set_align( ui_Count, LV_ALIGN_LEFT_MID );
+lv_label_set_text(ui_Count,"count:");
+lv_obj_set_style_text_font(ui_Count, &ui_font_Font2, LV_PART_MAIN| LV_STATE_DEFAULT);
+
+ui_MaxRate = lv_label_create(ui_Values);
+lv_obj_set_width( ui_MaxRate, LV_SIZE_CONTENT);  /// 1
+lv_obj_set_height( ui_MaxRate, LV_SIZE_CONTENT);   /// 1
+lv_obj_set_align( ui_MaxRate, LV_ALIGN_LEFT_MID );
+lv_label_set_text(ui_MaxRate,"max rate:");
+lv_obj_set_style_text_font(ui_MaxRate, &ui_font_Font2, LV_PART_MAIN| LV_STATE_DEFAULT);
 
 ui_Buttons = lv_obj_create(ui_Top);
 lv_obj_set_width( ui_Buttons, 100);
@@ -45,15 +56,21 @@ lv_obj_set_align( ui_Buttons, LV_ALIGN_CENTER );
 lv_obj_clear_flag( ui_Buttons, LV_OBJ_FLAG_SCROLLABLE );    /// Flags
 
 ui_ClearCount = lv_btn_create(ui_Buttons);
-lv_obj_set_width( ui_ClearCount, 100);
-lv_obj_set_height( ui_ClearCount, 50);
+lv_obj_set_width( ui_ClearCount, lv_pct(120));
+lv_obj_set_height( ui_ClearCount, lv_pct(300));
 lv_obj_set_align( ui_ClearCount, LV_ALIGN_CENTER );
 lv_obj_add_flag( ui_ClearCount, LV_OBJ_FLAG_SCROLL_ON_FOCUS );   /// Flags
 lv_obj_clear_flag( ui_ClearCount, LV_OBJ_FLAG_SCROLLABLE );    /// Flags
 
+ui_ClearCountLabel = lv_label_create(ui_ClearCount);
+lv_obj_set_width( ui_ClearCountLabel, LV_SIZE_CONTENT);  /// 1
+lv_obj_set_height( ui_ClearCountLabel, LV_SIZE_CONTENT);   /// 1
+lv_obj_set_align( ui_ClearCountLabel, LV_ALIGN_CENTER );
+lv_label_set_text(ui_ClearCountLabel,"Reset");
+
 ui_Bottom = lv_obj_create(ui_Main);
 lv_obj_set_width( ui_Bottom, lv_pct(90));
-lv_obj_set_height( ui_Bottom, lv_pct(40));
+lv_obj_set_height( ui_Bottom, lv_pct(30));
 lv_obj_set_align( ui_Bottom, LV_ALIGN_CENTER );
 lv_obj_set_flex_flow(ui_Bottom,LV_FLEX_FLOW_COLUMN);
 lv_obj_set_flex_align(ui_Bottom, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
@@ -70,5 +87,7 @@ lv_bar_set_value(ui_Battery,25,LV_ANIM_OFF);
 lv_obj_set_width( ui_Battery, lv_pct(100));
 lv_obj_set_height( ui_Battery, lv_pct(40));
 lv_obj_set_align( ui_Battery, LV_ALIGN_CENTER );
+
+lv_obj_add_event_cb(ui_ClearCount, ui_event_ClearCount, LV_EVENT_ALL, NULL);
 
 }

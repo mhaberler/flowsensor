@@ -35,12 +35,14 @@ static int32_t track_count;
 static uint32_t track_now;
 static float max_rate;
 
+#ifdef LVGL_UI
 void clearCountPressed(lv_event_t *e) {
   qdecoder.reset();
   track_count = 0;
   track_now = micros();
   max_rate = 0;
 }
+#endif
 
 void setup() {
   // #ifdef ARDUINO_USB_CDC_ON_BOOT

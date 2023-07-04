@@ -13,6 +13,8 @@
 #endif
 
 void ui_update_values(const mfdReport_t &mfd, float maxRate) {
+#ifdef LVGL_UI
+
   char buf[30];
   sprintf(buf, "count: %u", mfd.count);
   lv_label_set_text(ui_Count, buf);
@@ -30,4 +32,5 @@ void ui_update_values(const mfdReport_t &mfd, float maxRate) {
   lv_bar_set_value(ui_FlowRate, pct, LV_ANIM_OFF);
 
   lv_bar_set_value(ui_Battery, mfd.batteryLevel, LV_ANIM_OFF);
+#endif
 }

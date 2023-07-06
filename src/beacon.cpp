@@ -31,20 +31,23 @@ void beacon_update_manufacturer_data(uint8_t *data, size_t size) {
   if (pAdvertising == NULL) {
     pAdvertising = BLEDevice::getAdvertising();
   }
-  if (pAdvertising->isAdvertising()) {
-    pAdvertising->reset();
+  if (advData) {
+    delete advData;
+    advData = NULL;
   }
-
   advData = new BLEAdvertisementData();
   std::string manufacturerData((char *)data, size);
 
   advData->setManufacturerData(manufacturerData);
-  // ESP_LOGI("beacon.cpp", "payload size=%u\n", advData->getPayload().size());
 
-  pAdvertising->setScanResponseData(scanResponse);
-  pAdvertising->setAdvertisementData(*advData);
-  pAdvertising->setAdvertisementType(BLE_GAP_CONN_MODE_NON);
-
-  pAdvertising->start();
-  delete advData;
+  if (pAdvertising->isAdvertising()) {
+    // Serial.println("stopping Advertising");
+    pAdvertising->reset();
+  } else {
+    // Serial.println("not advertising, setting mfd and restart");
+    pAdvertising->setScanResponseData(scanResponse);
+    pAdvertising->setAdvertisementData(*advData);
+    pAdvertising->setAdvertisementType(BLE_GAP_CONN_MODE_NON);
+    pAdvertising->start();
+  }
 }

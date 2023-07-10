@@ -5,8 +5,6 @@
 #include "esp_sleep.h"
 #include "sys/time.h"
 
-
-
 #define SERVICE_UUID "4faf"
 static NimBLEUUID dataUuid(SERVICE_UUID);
 
@@ -16,13 +14,13 @@ static BLEAdvertising *pAdvertising;
 
 static char g_devName[32] = {0};
 
-const uint8_t *beacon_setup(void) {
+const std::string beacon_setup(void) {
   uint8_t devAddrArray[6] = {0};
 
   BLEDevice::init("");
   memcpy(devAddrArray, BLEDevice::getAddress().getNative(), 6);
-  snprintf(g_devName, 32, "%s%02X%02X%02X", BLE_PREFIX, devAddrArray[2], devAddrArray[1],
-           devAddrArray[0]);
+  snprintf(g_devName, 32, "%s%02X%02X%02X", BLE_PREFIX, devAddrArray[2],
+           devAddrArray[1], devAddrArray[0]);
 
   BLEDevice::deinit();
   BLEDevice::init(g_devName);
@@ -34,8 +32,10 @@ const uint8_t *beacon_setup(void) {
   scanResponse.setAppearance(BLE_APPEARANCE_GENERIC_TAG);
   scanResponse.setFlags(BLE_HS_ADV_F_BREDR_UNSUP | BLE_HS_ADV_F_DISC_GEN);
   scanResponse.setName(g_devName);
-
-  return BLEDevice::getAddress().getNative();
+  
+  std::string result;
+  result.assign((const char *)BLEDevice::getAddress().getNative(), 6);
+  return result;
 }
 
 void beacon_update_manufacturer_data(uint8_t *data, size_t size) {

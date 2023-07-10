@@ -37,7 +37,7 @@ void ui_update_values(const mfdReport_t &mfd, float maxRate) {
   }
 
   char buf[30];
-  sprintf(buf, "count: %u", mfd.count);
+  sprintf(buf, "count: %d", mfd.count);
   lv_label_set_text(ui_Count, buf);
 
   sprintf(buf, "rate: %u", (uint32_t)(mfd.rate / 10.0f));

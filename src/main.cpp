@@ -92,9 +92,14 @@ void setup() {
 #ifdef M5UNIFIED
   manufacturer_data.batteryLevel = M5.Power.getBatteryLevel();
 #endif
-  const uint8_t *adr = beacon_setup();
-  memcpy(manufacturer_data.address, adr, sizeof(manufacturer_data.address));
-
+  const uint8_t *na = (const uint8_t *)beacon_setup().c_str();
+  uint8_t *ap = manufacturer_data.address;
+  *ap++ = na[5];
+  *ap++ = na[4];
+  *ap++ = na[3];
+  *ap++ = na[2];
+  *ap++ = na[1];
+  *ap++ = na[0];
   sensor.attach_ms(UPDATE_MS, []() { sensor_update(false); });
   idle.attach_ms(IDLE_UPDATE_MS, []() {
 #ifdef M5UNIFIED

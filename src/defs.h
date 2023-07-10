@@ -10,14 +10,15 @@
 #define PIN_FLOWSENSOR_B -1
 #endif
 
-#ifndef BLE_NAME
-#define BLE_NAME "FlowSensor"
+#ifndef BLE_PREFIX
+#define BLE_PREFIX "FlowSensor"
 #endif
 
 #ifndef MANUFACTURER_ID
 #define MANUFACTURER_ID 0x4711 // https://www.4711.com/en/
 #endif
 
+// https://infocenter.nordicsemi.com/index.jsp?topic=%2Fcom.nordic.infocenter.s132.api.v3.0.0%2Fgroup___b_l_e___a_p_p_e_a_r_a_n_c_e_s.html
 #ifndef BLE_APPEARANCE_GENERIC_TAG
 #define BLE_APPEARANCE_GENERIC_TAG 512
 #endif
@@ -42,3 +43,4 @@ typedef struct __attribute__((packed)) {
 
 void ui_update_values(const mfdReport_t &mfd, float maxRate);
 void ui_set_inital_values(void);
+

@@ -28,9 +28,7 @@ while this should easily run on any ESP32 platform, right now only the M5Stack C
 ## Build
 
 ````
-git clone  https://github.com/mhaberler/flowsensor.git 
-cd flowsensor/
-git submodule update --init --recursive
+git clone --recursive https://github.com/mhaberler/flowsensor.git 
 
 ````
 Choose target,  build and upload.

@@ -8,7 +8,6 @@
 
 // based upon: https://forum.arduino.cc/t/interrupt-in-class-esp32/1039326/12
 
-
 typedef struct {
   uint32_t count;
   uint32_t bounces;
@@ -25,7 +24,7 @@ public:
     if (pin < 0)
       return;
     if (!digitalPinIsValid(pin)) {
-      ESP_LOGD( "FlowSensor", "invalid pin: %d", pin);
+      ESP_LOGD("FlowSensor", "invalid pin: %d", pin);
       return;
     }
     valid_ = true;
@@ -42,7 +41,7 @@ public:
                       std::bind(&FlowSensor::sensorISR, this), mode_);
       enabled_ = true;
     } else {
-      ESP_LOGD( "FlowSensor", "invalid configuration");
+      ESP_LOGD("FlowSensor", "invalid configuration");
     }
     return enabled_;
   }
@@ -51,7 +50,7 @@ public:
     detachInterrupt(digitalPinToInterrupt(pin_));
     enabled_ = false;
   }
-  
+
   void reset(void) {
     count_ = 0;
     irqs_ = 0;

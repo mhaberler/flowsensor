@@ -11,7 +11,7 @@ typedef struct {
   int32_t count;
   uint32_t last_change; // uS since startup
   uint32_t last_sample; // uS since startup
-  uint32_t updates; // IRQ's, or timer samples
+  uint32_t updates;     // IRQ's, or timer samples
   bool changed;
 } qsensor_report_t;
 
@@ -83,7 +83,7 @@ public:
     report.changed = changeDetected();
     report.count = count_;
     report.last_change = qLastChangeAt_;
-    report.updates = updates_; 
+    report.updates = updates_;
     report.last_sample = lastSample_;
   }
 

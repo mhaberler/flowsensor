@@ -32,7 +32,7 @@ const std::string beacon_setup(void) {
   scanResponse.setAppearance(BLE_APPEARANCE_GENERIC_TAG);
   scanResponse.setFlags(BLE_HS_ADV_F_BREDR_UNSUP | BLE_HS_ADV_F_DISC_GEN);
   scanResponse.setName(g_devName);
-  
+
   std::string result;
   result.assign((const char *)BLEDevice::getAddress().getNative(), 6);
   return result;

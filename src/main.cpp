@@ -141,7 +141,7 @@ void sensor_update(bool force) {
     uint32_t now = micros();
 
     float delta = (float)(report.count - track_count);
-    float rate = delta * 1.e6f / (now - track_now);
+    float rate = abs(delta * 1.e6f / (now - track_now));
     if (rate > max_rate) {
       max_rate = rate;
     }

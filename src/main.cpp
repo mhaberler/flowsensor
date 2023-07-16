@@ -17,6 +17,12 @@
 #include "ui/ui.h"
 #endif
 
+// try custom esp-idf component
+// see components/custom-header/Kconfig
+#if CONFIG_FOO_ENABLE_BAR
+#include <my-header.h>
+#endif
+
 #define T2OK(x) ((x) ? "OK" : "FAILED")
 
 FlowSensor flow_sensor;
@@ -52,7 +58,7 @@ void clearCountPressed(lv_event_t *e) {
 
 void setup() {
 
-  // delay(3000);
+  delay(3000);
 
 #ifdef M5UNIFIED
   auto cfg = M5.config();
@@ -139,6 +145,11 @@ void sensor_update(bool force) {
 
   if ((report.count != track_count) || force) {
     uint32_t now = micros();
+
+// try custom esp-idf component
+#if CONFIG_FOO_ENABLE_BAR
+    test_method(track_count);
+#endif
 
     float delta = (float)(report.count - track_count);
     float rate = delta * 1.e6f / (now - track_now);

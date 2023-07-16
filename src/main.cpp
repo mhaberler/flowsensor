@@ -58,7 +58,7 @@ void clearCountPressed(lv_event_t *e) {
 
 void setup() {
 
-  // delay(3000);
+  delay(3000);
 
 #ifdef M5UNIFIED
   auto cfg = M5.config();

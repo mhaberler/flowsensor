@@ -12,3 +12,4 @@ src/config/config.h
 template/
 retired/
 
+sdkconfig*.old

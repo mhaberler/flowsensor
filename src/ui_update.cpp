@@ -1,3 +1,5 @@
+
+
 #include <Arduino.h>
 #ifdef M5UNIFIED
 #include <M5Unified.h>
@@ -10,7 +12,6 @@
 #ifdef LVGL_UI
 #include "lv_setup.h"
 #include "ui/ui.h"
-#endif
 
 void ui_set_inital_values() {
   lv_obj_set_style_bg_color(ui_Battery, lv_color_hex(0xFADD18),
@@ -55,3 +56,7 @@ void ui_update_values(const mfdReport_t &mfd, float maxRate) {
   lv_bar_set_value(ui_Battery, mfd.batteryLevel, LV_ANIM_OFF);
 #endif
 }
+#else
+void ui_update_values(const mfdReport_t &mfd, float maxRate) {}
+void ui_set_inital_values() {}
+#endif

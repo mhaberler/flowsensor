@@ -12,9 +12,13 @@
 #include "beacon.h"
 #include "defs.h"
 
-#ifdef LVGL_UI
 #include "lv_setup.h"
 #include "ui/ui.h"
+
+// try custom esp-idf component
+// see components/custom-header/Kconfig
+#if CONFIG_FOO_ENABLE_BAR
+#include <my-header.h>
 #endif
 
 #define T2OK(x) ((x) ? "OK" : "FAILED")
@@ -52,7 +56,7 @@ void clearCountPressed(lv_event_t *e) {
 
 void setup() {
 
-  // delay(3000);
+  delay(3000);
 
 #ifdef M5UNIFIED
   auto cfg = M5.config();
@@ -140,6 +144,11 @@ void sensor_update(bool force) {
   if ((report.count != track_count) || force) {
     uint32_t now = micros();
 
+// try custom esp-idf component
+#if CONFIG_FOO_ENABLE_BAR
+    test_method(track_count);
+#endif
+
     float delta = (float)(report.count - track_count);
     float rate = abs(delta * 1.e6f / (now - track_now));
     if (rate > max_rate) {
@@ -154,9 +163,11 @@ void sensor_update(bool force) {
     beacon_update_manufacturer_data((uint8_t *)&manufacturer_data,
                                     sizeof((manufacturer_data)));
   }
-  // ESP_LOGI(__FILE__, "count: %d rate: %d max_rate %f force %d\n",
-  //          manufacturer_data.count, manufacturer_data.rate, max_rate, force);
+// ESP_LOGI(__FILE__, "count: %d rate: %d max_rate %f force %d\n",
+//          manufacturer_data.count, manufacturer_data.rate, max_rate, force);
+#ifdef LVGL_UI
   ui_update_values(manufacturer_data, max_rate);
+#endif
 #endif
 #ifdef FLOWSENSOR
   flowsensor_report_t report;
@@ -182,7 +193,8 @@ void sensor_update(bool force) {
     beacon_update_manufacturer_data((uint8_t *)&manufacturer_data,
                                     sizeof((manufacturer_data)));
   }
+#ifdef LVGL_UI
   ui_update_values(manufacturer_data, max_rate);
-
+#endif
 #endif
 }

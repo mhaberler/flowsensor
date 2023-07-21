@@ -12,10 +12,8 @@
 #include "beacon.h"
 #include "defs.h"
 
-#ifdef LVGL_UI
 #include "lv_setup.h"
 #include "ui/ui.h"
-#endif
 
 // try custom esp-idf component
 // see components/custom-header/Kconfig
@@ -165,9 +163,11 @@ void sensor_update(bool force) {
     beacon_update_manufacturer_data((uint8_t *)&manufacturer_data,
                                     sizeof((manufacturer_data)));
   }
-  // ESP_LOGI(__FILE__, "count: %d rate: %d max_rate %f force %d\n",
-  //          manufacturer_data.count, manufacturer_data.rate, max_rate, force);
+// ESP_LOGI(__FILE__, "count: %d rate: %d max_rate %f force %d\n",
+//          manufacturer_data.count, manufacturer_data.rate, max_rate, force);
+#ifdef LVGL_UI
   ui_update_values(manufacturer_data, max_rate);
+#endif
 #endif
 #ifdef FLOWSENSOR
   flowsensor_report_t report;
@@ -193,7 +193,8 @@ void sensor_update(bool force) {
     beacon_update_manufacturer_data((uint8_t *)&manufacturer_data,
                                     sizeof((manufacturer_data)));
   }
+#ifdef LVGL_UI
   ui_update_values(manufacturer_data, max_rate);
-
+#endif
 #endif
 }

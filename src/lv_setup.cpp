@@ -3,7 +3,7 @@
 #if defined(ARDUINO_M5STACK_Core2)
 #include <M5Core2.h>
 #endif
-#if defined(ARDUINO_M5STACK_CORES3)
+#if defined(M5UNIFIED) 
 // #include <M5CoreS3.h>
 #include <M5Unified.h>
 #endif

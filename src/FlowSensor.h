@@ -18,6 +18,38 @@ typedef struct {
 } flowsensor_report_t;
 
 class FlowSensor {
+private:
+  bool enabled_, valid_;
+  int16_t pin_;
+  int mode_;
+  unsigned long flowDeltaT_, bounceDeltaT_;
+  bool flowDetected_;
+  volatile uint32_t irqs_;
+  volatile bool changed_;
+  volatile unsigned long lastEdge_;
+  volatile uint32_t count_ = 0;
+  volatile uint32_t bounces_ = 0;
+
+  void sensorISR() {
+#ifdef ISR_PIN
+    TOGGLE(ISR_PIN);
+#endif
+    irqs_++;
+
+    unsigned long now = micros();
+    if ((now - lastEdge_) < bounceDeltaT_) {
+      bounces_++;
+    } else {
+      count_++;
+    }
+    changed_ = true;
+    lastEdge_ = now;
+
+#ifdef ISR_PIN
+    TOGGLE(ISR_PIN);
+#endif
+  }
+
 public:
   void begin(int16_t pin, unsigned long flowDeltaT = 100000,
              unsigned long bounceDeltaT = 10, int mode = FALLING) {
@@ -72,36 +104,4 @@ public:
   uint32_t numIrqs(void) { return irqs_; }
   uint8_t pinNum(void) { return pin_; }
   bool enabled(void) { return enabled_; }
-
-private:
-  bool enabled_, valid_;
-  int16_t pin_;
-  int mode_;
-  unsigned long flowDeltaT_, bounceDeltaT_;
-  bool flowDetected_;
-  volatile uint32_t irqs_;
-  volatile bool changed_;
-  volatile unsigned long lastEdge_;
-  volatile uint32_t count_ = 0;
-  volatile uint32_t bounces_ = 0;
-
-  void IRAM_ATTR sensorISR() {
-#ifdef ISR_PIN
-    TOGGLE(ISR_PIN);
-#endif
-    irqs_++;
-
-    unsigned long now = micros();
-    if ((now - lastEdge_) < bounceDeltaT_) {
-      bounces_++;
-    } else {
-      count_++;
-    }
-    changed_ = true;
-    lastEdge_ = now;
-
-#ifdef ISR_PIN
-    TOGGLE(ISR_PIN);
-#endif
-  }
 };

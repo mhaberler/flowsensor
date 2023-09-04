@@ -66,13 +66,13 @@ class advCallbacks : public NimBLEExtAdvertisingCallbacks {
 const std::string beacon_setup(void) {
   uint8_t devAddrArray[6] = {0};
 
-  BLEDevice::init("");
+  NimBLEDevice::init("");
   memcpy(devAddrArray, BLEDevice::getAddress().getNative(), 6);
   snprintf(g_devName, 32, "%s%02X%02X%02X", BLE_PREFIX, devAddrArray[2],
            devAddrArray[1], devAddrArray[0]);
 
-  BLEDevice::deinit();
-  BLEDevice::init(g_devName);
+  NimBLEDevice::deinit();
+  NimBLEDevice::init(g_devName);
 
   if (pAdvertising == NULL) {
     pAdvertising = BLEDevice::getAdvertising();
@@ -98,9 +98,10 @@ void beacon_update_manufacturer_data(uint8_t *data, size_t size) {
     advData = NULL;
   }
   advData = new NimBLEExtAdvertisement();
-  std::string manufacturerData((char *)data, size);
+  std::string manufacturerData((char *)data, size+100);
   advData->setManufacturerData(manufacturerData);
   advData->setCompleteServices16({NimBLEUUID(SERVICE_UUID)});
+  advData->setName(g_devName);
 
   if (pAdvertising->isAdvertising()) {
     pAdvertising->stop(inst_id);

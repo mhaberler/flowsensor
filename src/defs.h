@@ -11,7 +11,7 @@
 #endif
 
 #ifndef BLE_PREFIX
-#define BLE_PREFIX "FlowSensor"
+#define BLE_PREFIX "Flow"
 #endif
 
 #ifndef MANUFACTURER_ID

@@ -28,6 +28,7 @@
 #define FLAG_CHARGING 4
 #define FLAG_DISCHARGING 8
 #define FLAG_CHARGE_UNKNOWN 16
+#define FLAG_PRESSURE_MILLIBAR 32
 #define CHARGE_MASK (FLAG_CHARGING | FLAG_DISCHARGING | FLAG_CHARGE_UNKNOWN)
 
 typedef struct __attribute__((packed)) {
@@ -36,6 +37,7 @@ typedef struct __attribute__((packed)) {
   uint8_t address[6];   // replicate to tunnel past iOS
   int32_t count;        // counts
   uint32_t last_change; // uS since startup
+  uint16_t pressure_mBar;
   int16_t rate;         // counts/second
   uint8_t batteryLevel; // %
   uint8_t flags;
@@ -43,3 +45,5 @@ typedef struct __attribute__((packed)) {
 
 void ui_update_values(const mfdReport_t &mfd, float maxRate);
 void ui_set_inital_values(void);
+
+float mVtoPressure(const float &mV);

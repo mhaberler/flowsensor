@@ -163,7 +163,7 @@ void beacon_update_manufacturer_data(const char *data, size_t size) {
   if (pAdvertising->isAdvertising()) {
     pAdvertising->reset();
   } else {
-    pAdvertising->setScanResponseData(scanResponse);
+    // pAdvertising->setScanResponseData(scanResponse);
     pAdvertising->setAdvertisementData(*advData);
     pAdvertising->setAdvertisementType(BLE_GAP_CONN_MODE_NON);
     pAdvertising->start();
@@ -176,15 +176,20 @@ Ticker sampler;
 void setup() {
   delay(3000);
   Serial.begin(115200);
-  printf("startup\n");
+#if CONFIG_BT_NIMBLE_EXT_ADV
+  printf("startup CONFIG_BT_NIMBLE_EXT_ADV\n");
+#else
+  printf("startup ble4x\n");
+#endif
   adr = beacon_setup();
 }
 
 void loop() {
 
 #if CONFIG_BT_NIMBLE_EXT_ADV
-  const char *mfd = "\x11\x47The quick brown fox jumps over the lazy dog The quick "
-                    "brown fox jumps over the lazy dog";
+  const char *mfd =
+      "\x11\x47The quick brown fox jumps over the lazy dog The quick "
+      "brown fox jumps over the lazy dog";
 #else
   const char *mfd = "\x11\x47hi there";
 #endif

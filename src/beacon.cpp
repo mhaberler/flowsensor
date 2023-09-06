@@ -1,14 +1,21 @@
 
-#include "beacon.h"
+#include "Ticker.h"
+#include <Arduino.h>
+
 #include "NimBLEBeacon.h"
 #include "NimBLEDevice.h"
 #include "esp_sleep.h"
 #include "sys/time.h"
+#include <stddef.h>
+#include <stdint.h>
+#include <string>
 
 #define SERVICE_UUID "4faf"
 static NimBLEUUID dataUuid(SERVICE_UUID);
 static NimBLEDevice dev;
 static char g_devName[32] = {0};
+
+static std::string adr;
 
 #if CONFIG_BT_NIMBLE_EXT_ADV
 static NimBLEExtAdvertisement *advData;
@@ -81,19 +88,19 @@ const std::string beacon_setup(void) {
   return result;
 }
 
-void beacon_update_manufacturer_data(uint8_t *data, size_t size) {
+void beacon_update_manufacturer_data(const char *data, size_t size) {
 
   if (advData) {
     delete advData;
     advData = NULL;
   }
   advData = new NimBLEExtAdvertisement(BLE_HCI_LE_PHY_1M, BLE_HCI_LE_PHY_2M);
-  std::string manufacturerData((char *)data, size + 100);
+  std::string manufacturerData((char *)data, size);
   advData->setManufacturerData(manufacturerData);
   advData->setCompleteServices16({NimBLEUUID(SERVICE_UUID)});
   advData->setName(g_devName);
   advData->setFlags(BLE_HS_ADV_F_BREDR_UNSUP | BLE_HS_ADV_F_DISC_GEN);
-  advData->setAppearance(BLE_APPEARANCE_GENERIC_TAG);
+  // advData->setAppearance(BLE_APPEARANCE_GENERIC_TAG);
   advData->setLegacyAdvertising(false);
   advData->enableScanRequestCallback(true);
 
@@ -133,7 +140,7 @@ const std::string beacon_setup(void) {
     pAdvertising = BLEDevice::getAdvertising();
   }
   // scanResponse.setCompleteServices16({NimBLEUUID(SERVICE_UUID)});
-  scanResponse.setAppearance(BLE_APPEARANCE_GENERIC_TAG);
+  // scanResponse.setAppearance(BLE_APPEARANCE_GENERIC_TAG);
   scanResponse.setFlags(BLE_HS_ADV_F_BREDR_UNSUP | BLE_HS_ADV_F_DISC_GEN);
   scanResponse.setName(g_devName);
 
@@ -142,7 +149,7 @@ const std::string beacon_setup(void) {
   return result;
 }
 
-void beacon_update_manufacturer_data(uint8_t *data, size_t size) {
+void beacon_update_manufacturer_data(const char *data, size_t size) {
 
   if (advData) {
     delete advData;
@@ -163,3 +170,27 @@ void beacon_update_manufacturer_data(uint8_t *data, size_t size) {
   }
 }
 #endif
+
+Ticker sampler;
+
+void setup() {
+  delay(3000);
+  Serial.begin(115200);
+  printf("startup\n");
+  adr = beacon_setup();
+}
+
+void loop() {
+
+#if CONFIG_BT_NIMBLE_EXT_ADV
+  const char *mfd = "\x11\x47The quick brown fox jumps over the lazy dog The quick "
+                    "brown fox jumps over the lazy dog";
+#else
+  const char *mfd = "\x11\x47hi there";
+#endif
+  const size_t len = strlen(mfd);
+
+  beacon_update_manufacturer_data(mfd, len);
+
+  delay(1000);
+}

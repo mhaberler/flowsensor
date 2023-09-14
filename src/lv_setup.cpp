@@ -1,4 +1,6 @@
 
+#ifdef LVGL_UI
+
 #include <Arduino.h>
 #if defined(ARDUINO_M5STACK_Core2)
 #include <M5Core2.h>
@@ -106,3 +108,4 @@ void lv_handler() {
     uint32_t interval = lv_timer_handler(); // Update the UI
   }
 }
+#endif

@@ -24,23 +24,25 @@
 #endif
 
 #define FLAG_QUADRATURE 1
-#define FLAG_WIFICONNECTED 2 // unused
-#define FLAG_CHARGING 4
-#define FLAG_DISCHARGING 8
-#define FLAG_CHARGE_UNKNOWN 16
-#define FLAG_PRESSURE_MILLIBAR 32
+#define FLAG_CHARGING 2
+#define FLAG_DISCHARGING 4
+#define FLAG_CHARGE_UNKNOWN 8
+#define FLAG_PRESSURE_MILLIBAR 16
 #define CHARGE_MASK (FLAG_CHARGING | FLAG_DISCHARGING | FLAG_CHARGE_UNKNOWN)
+
+#define REPORT_VERSION 2
 
 typedef struct __attribute__((packed)) {
   uint8_t mfidLow;
   uint8_t mfidHigh;
+  uint8_t version;
+  uint8_t flags;
   uint8_t address[6];   // replicate to tunnel past iOS
   int32_t count;        // counts
   uint32_t last_change; // uS since startup
   uint16_t pressure_mBar;
   int16_t rate;         // counts/second
   uint8_t batteryLevel; // %
-  uint8_t flags;
 } mfdReport_t;
 
 void ui_update_values(const mfdReport_t &mfd, float maxRate);

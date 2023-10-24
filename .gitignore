@@ -13,3 +13,8 @@ template/
 retired/
 
 sdkconfig*.old
+
+squareline-ui/*
+salea/*
+video/*
+esp/*

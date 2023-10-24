@@ -35,7 +35,6 @@ static void my_disp_flush(lv_disp_drv_t *disp, const lv_area_t *area,
 /* Read the touchpad */
 static void my_touchpad_read(lv_indev_drv_t *indev_driver,
                              lv_indev_data_t *data) {
-  uint16_t touchX = 0, touchY = 0;
 #ifdef M5UNIFIED
   M5.update();
   auto count = M5.Touch.getCount();
@@ -55,6 +54,8 @@ static void my_touchpad_read(lv_indev_drv_t *indev_driver,
     data->state = LV_INDEV_STATE_REL;
   }
 #else
+  uint16_t touchX = 0, touchY = 0;
+
   bool touched = M5.Lcd.getTouch(&touchX, &touchY, 600);
   if (M5.Lcd.getTouch(&touchX, &touchY, 600)) {
     data->state = LV_INDEV_STATE_PR;

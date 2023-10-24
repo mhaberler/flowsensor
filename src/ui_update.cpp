@@ -43,13 +43,13 @@ void ui_update_values(const mfdReport_t &mfd, float maxRate) {
 
   sprintf(buf, "rate: %u", (uint32_t)(mfd.rate / 10.0f));
   lv_label_set_text(ui_Rate, buf);
-#ifdef PRESSURE_WORKAROUND
-  sprintf(buf, "Bar: %.2f", mfd.pressure_mBar/1000.0);
-  lv_label_set_text(ui_MaxRate, buf);
-#else
+
   sprintf(buf, "max: %u", (uint32_t)maxRate);
   lv_label_set_text(ui_MaxRate, buf);
-#endif
+
+  sprintf(buf, "bar: %.2f", mfd.pressure_mBar/1000.0);
+  lv_label_set_text(ui_pressure, buf);
+  
   uint32_t pct = 0;
   if (maxRate > 0.0f) {
     pct = 100 * (mfd.rate / 10.0f) / maxRate;
